@@ -1,25 +1,24 @@
 package service
 
 import (
-	"context"
-
 	"github.com/Aidahar/filmsApi/internal/domain"
+	"github.com/Aidahar/filmsApi/internal/repository/psql"
 )
 
-type UsersRepository interface {
-	GetAllUsers(ctx context.Context) ([]domain.User, error)
+type Servicecer interface {
+	GetAllUsers() ([]domain.User, error)
 }
 
-type Users struct {
-	repo UsersRepository
+type UserService struct {
+	repo psql.Userer
 }
 
-func NewUsers(repo UsersRepository) *Users {
-	return &Users{
+func NewUsers(repo psql.Userer) *UserService {
+	return &UserService{
 		repo: repo,
 	}
 }
 
-func (u *Users) GetAll(ctx context.Context) ([]domain.User, error) {
-	return u.repo.GetAllUsers(ctx)
+func (s *UserService) GetAllUsers() ([]domain.User, error) {
+	return s.repo.GetAllUsers()
 }

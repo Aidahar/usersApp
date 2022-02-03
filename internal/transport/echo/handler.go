@@ -7,26 +7,33 @@ import (
 
 	"github.com/Aidahar/filmsApi/ewrap"
 	"github.com/Aidahar/filmsApi/internal/domain"
+	"github.com/Aidahar/filmsApi/internal/service"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 type Users interface {
-	GetAllUsers(ctx context.Context) ([]domain.User, error)
+	GetAllUsers() ([]domain.User, error)
 }
 
 type Handler struct {
 	usersRepos Users
 }
 
-func (h *Handler) InitRoutes() *echo.Echo {
+func NewHandler(service *service.Servicecer) *Handler {
+	return &Handler{
+		usersRepos: service,
+	}
+}
+
+func InitRoutes() *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 
-	e.GET("/users", h.GetAllUsers)
+	e.GET("/users", GetAllUsers)
 	//	e.GET("/users/:id", GetUser)
 	//	e.POST("/users", AddUser)
 	//	e.PUT("/users/:id", UpdateUser)

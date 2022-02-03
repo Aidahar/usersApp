@@ -5,17 +5,21 @@ import (
 	"gorm.io/gorm"
 )
 
-type Users struct {
+type UserRepository struct {
 	db *gorm.DB
 }
 
-func NewUsers(db *gorm.DB) *Users {
-	return &Users{
+type Userer interface {
+	GetAllBooks() []domain.User
+}
+
+func NewUserRepository(db *gorm.DB) *UserRepository {
+	return &UserRepository{
 		db: db,
 	}
 }
 
-func (u *Users) GetAllUsers() ([]domain.User, error) {
+func (u *UserRepository) GetAllUsers() ([]domain.User, error) {
 	var users []domain.User
 	u.db.Find(&users)
 	return users, nil

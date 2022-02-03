@@ -33,15 +33,12 @@ func main() {
 	db, err := database.ConnectionDB(dsn)
 
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Fatalf("failed to initialize db: %s\n", err.Error())
 	}
 
 	db.AutoMigrate(&domain.User{})
 
-	var u []domain.User
-	db.Find(&u)
-
-	fmt.Println(u)
+	repos := repository.NewRepository(db)
 	//	usersRepo := psql.NewUsers(db)
 	//	usersService := service.NewUsers(usersRepo)
 	e := transport.InitRoutes()

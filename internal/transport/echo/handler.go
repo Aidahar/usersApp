@@ -1,7 +1,6 @@
 package transport
 
 import (
-	"context"
 	"net/http"
 	"strconv"
 
@@ -12,28 +11,24 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type Users interface {
-	GetAllUsers() ([]domain.User, error)
-}
-
 type Handler struct {
-	usersRepos Users
+	service service.UserService
 }
 
-func NewHandler(service *service.Servicecer) *Handler {
+func NewHandler(service service.UserService) *Handler {
 	return &Handler{
-		usersRepos: service,
+		service: service,
 	}
 }
 
-func InitRoutes() *echo.Echo {
+func (h *Handler) InitRoutes() *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 
-	e.GET("/users", GetAllUsers)
+	e.GET("/users", h.GetAllUsers)
 	//	e.GET("/users/:id", GetUser)
 	//	e.POST("/users", AddUser)
 	//	e.PUT("/users/:id", UpdateUser)
@@ -43,7 +38,7 @@ func InitRoutes() *echo.Echo {
 }
 
 func (h *Handler) GetAllUsers(c echo.Context) error {
-	users, err := h.usersRepos.GetAllUsers(context.TODO())
+	users, err := h.service.GetAllUsers()
 	ewrap.LogFatal(err)
 
 	return c.JSON(http.StatusOK, users)

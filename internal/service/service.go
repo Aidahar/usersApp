@@ -13,7 +13,7 @@ type UserService struct {
 	repo psql.Userer
 }
 
-func NewUsers(repo psql.Userer) *UserService {
+func NewUsersService(repo psql.Userer) *UserService {
 	return &UserService{
 		repo: repo,
 	}

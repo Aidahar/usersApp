@@ -10,7 +10,7 @@ type UserRepository struct {
 }
 
 type Userer interface {
-	GetAllBooks() []domain.User
+	GetAllUsers() ([]domain.User, error)
 }
 
 func NewUserRepository(db *gorm.DB) *UserRepository {

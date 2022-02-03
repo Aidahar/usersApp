@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/Aidahar/filmsApi/internal/domain"
+	"github.com/Aidahar/filmsApi/internal/repository/psql"
+	"github.com/Aidahar/filmsApi/internal/service"
 	transport "github.com/Aidahar/filmsApi/internal/transport/echo"
 	"github.com/Aidahar/filmsApi/pkg/database"
 	"github.com/joho/godotenv"
@@ -38,9 +40,9 @@ func main() {
 
 	db.AutoMigrate(&domain.User{})
 
-	repos := repository.NewRepository(db)
-	//	usersRepo := psql.NewUsers(db)
-	//	usersService := service.NewUsers(usersRepo)
-	e := transport.InitRoutes()
+	repos := psql.NewUserRepository(db)
+	service := service.NewUsersService(repos)
+	handlers := transport.NewHandler(*service)
+	e := handlers.InitRoutes(handlers)
 	e.Logger.Fatal(e.Start(":8000"))
 }

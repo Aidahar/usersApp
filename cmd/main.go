@@ -43,6 +43,6 @@ func main() {
 	repos := psql.NewUserRepository(db)
 	service := service.NewUsersService(repos)
 	handlers := transport.NewHandler(*service)
-	e := handlers.InitRoutes(handlers)
+	e := handlers.InitRoutes()
 	e.Logger.Fatal(e.Start(":8000"))
 }

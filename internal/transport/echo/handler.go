@@ -29,10 +29,10 @@ func (h *Handler) InitRoutes() *echo.Echo {
 	}))
 
 	e.GET("/users", h.GetAllUsers)
-	//	e.GET("/users/:id", GetUser)
-	//	e.POST("/users", AddUser)
-	//	e.PUT("/users/:id", UpdateUser)
-	//	e.DELETE("/users/:id", DeleteUser)
+	e.GET("/users/:id", h.GetUser)
+	e.POST("/users", h.AddUser)
+	e.PUT("/users/:id", h.UpdateUser)
+	e.DELETE("/users/:id", h.DeleteUser)
 
 	return e
 }
@@ -44,13 +44,13 @@ func (h *Handler) GetAllUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
-func GetUser(c echo.Context) error {
+func (h *Handler) GetUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	return c.JSON(http.StatusOK, domain.Users[id])
 }
 
-func AddUser(c echo.Context) error {
+func (h *Handler) AddUser(c echo.Context) error {
 	u := &domain.User{
 		ID: domain.Seq,
 	}
@@ -62,7 +62,7 @@ func AddUser(c echo.Context) error {
 	return c.JSON(http.StatusCreated, u)
 }
 
-func UpdateUser(c echo.Context) error {
+func (h *Handler) UpdateUser(c echo.Context) error {
 	u := new(domain.User)
 	if err := c.Bind(u); err != nil {
 		return err
@@ -72,7 +72,7 @@ func UpdateUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, domain.Users[id])
 }
 
-func DeleteUser(c echo.Context) error {
+func (h *Handler) DeleteUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	delete(domain.Users, id)
 	return c.NoContent(http.StatusNoContent)

@@ -7,6 +7,7 @@ import (
 
 type Servicecer interface {
 	GetAllUsers() ([]domain.User, error)
+	GetUserById(id int) (domain.User, error)
 }
 
 type UserService struct {
@@ -21,4 +22,8 @@ func NewUsersService(repo psql.Userer) *UserService {
 
 func (s *UserService) GetAllUsers() ([]domain.User, error) {
 	return s.repo.GetAllUsers()
+}
+
+func (s *UserService) GetUserById(id int) (domain.User, error) {
+	return s.repo.GetUserById(id)
 }

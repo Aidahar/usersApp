@@ -46,8 +46,9 @@ func (h *Handler) GetAllUsers(c echo.Context) error {
 
 func (h *Handler) GetUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-
-	return c.JSON(http.StatusOK, domain.Users[id])
+	user, err := h.service.GetUserById(id)
+	ewrap.LogFatal(err)
+	return c.JSON(http.StatusOK, user)
 }
 
 func (h *Handler) AddUser(c echo.Context) error {

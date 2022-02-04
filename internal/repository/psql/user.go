@@ -12,6 +12,7 @@ type UserRepository struct {
 type Userer interface {
 	GetAllUsers() ([]domain.User, error)
 	GetUserById(id int) (domain.User, error)
+	DeleteUser(id int) error
 }
 
 func NewUserRepository(db *gorm.DB) *UserRepository {
@@ -30,4 +31,10 @@ func (u *UserRepository) GetUserById(id int) (domain.User, error) {
 	var user domain.User
 	u.db.First(&user, id)
 	return user, nil
+}
+
+func (u *UserRepository) DeleteUser(id int) error {
+	var user domain.User
+	u.db.Delete(&user, id)
+	return nil
 }

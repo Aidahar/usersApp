@@ -12,6 +12,7 @@ type UserRepository struct {
 type Userer interface {
 	GetAllUsers() ([]domain.User, error)
 	GetUserById(id int) (domain.User, error)
+	CreateUser(user domain.User) error
 	DeleteUser(id int) error
 }
 
@@ -31,6 +32,11 @@ func (u *UserRepository) GetUserById(id int) (domain.User, error) {
 	var user domain.User
 	u.db.First(&user, id)
 	return user, nil
+}
+
+func (u *UserRepository) CreateUser(user domain.User) error {
+	u.db.Create(user)
+	return nil
 }
 
 func (u *UserRepository) DeleteUser(id int) error {

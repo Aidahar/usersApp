@@ -60,6 +60,7 @@ func (h *Handler) AddUser(c echo.Context) error {
 	}
 	domain.Users[u.ID] = u
 	domain.Seq++
+	h.service.CreateUser(*u)
 	return c.JSON(http.StatusCreated, u)
 }
 
@@ -75,6 +76,6 @@ func (h *Handler) UpdateUser(c echo.Context) error {
 
 func (h *Handler) DeleteUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	delete(domain.Users, id)
+	h.service.DeleteUser(id)
 	return c.NoContent(http.StatusNoContent)
 }

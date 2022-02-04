@@ -8,6 +8,8 @@ import (
 type Servicecer interface {
 	GetAllUsers() ([]domain.User, error)
 	GetUserById(id int) (domain.User, error)
+	CreateUser(user domain.User) (int, error)
+	DeleteUser(id int) error
 }
 
 type UserService struct {
@@ -26,6 +28,10 @@ func (s *UserService) GetAllUsers() ([]domain.User, error) {
 
 func (s *UserService) GetUserById(id int) (domain.User, error) {
 	return s.repo.GetUserById(id)
+}
+
+func (s *UserService) CreateUser(user domain.User) error {
+	return s.repo.CreateUser(user)
 }
 
 func (s *UserService) DeleteUser(id int) error {

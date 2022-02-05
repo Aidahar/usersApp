@@ -9,8 +9,3 @@ type User struct {
 	Password      string    `json:"password"`
 	Registered_at time.Time `json:"registered_at"`
 }
-
-var (
-	Users = map[int]*User{}
-	Seq   = 1
-)

@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectionDB(dsn string) (*gorm.DB, error) {
+func ConnectionDBSlite(dsn string) (*gorm.DB, error) {
 
 	fmt.Println("conname is\t\t", dsn)
 

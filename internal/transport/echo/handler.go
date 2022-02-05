@@ -52,15 +52,11 @@ func (h *Handler) GetUser(c echo.Context) error {
 }
 
 func (h *Handler) AddUser(c echo.Context) error {
-	u := &domain.User{
-		ID: domain.Seq,
-	}
-	if err := c.Bind(u); err != nil {
+	u := new(domain.User)
+	if err := c.Bind(&u); err != nil {
 		return err
 	}
-	domain.Users[u.ID] = u
-	domain.Seq++
-	h.service.CreateUser(*u)
+	h.service.AddUser(*u)
 	return c.JSON(http.StatusCreated, u)
 }
 
@@ -70,8 +66,8 @@ func (h *Handler) UpdateUser(c echo.Context) error {
 		return err
 	}
 	id, _ := strconv.Atoi(c.Param("id"))
-	domain.Users[id].Name = u.Name
-	return c.JSON(http.StatusOK, domain.Users[id])
+	h.service.UpdateUser(id, *u)
+	return c.JSON(http.StatusOK, u.ID)
 }
 
 func (h *Handler) DeleteUser(c echo.Context) error {

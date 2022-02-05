@@ -1,6 +1,7 @@
 package psql
 
 import (
+	"github.com/Aidahar/filmsApi/ewrap"
 	"github.com/Aidahar/filmsApi/internal/domain"
 	"gorm.io/gorm"
 )
@@ -12,7 +13,8 @@ type UserRepository struct {
 type Userer interface {
 	GetAllUsers() ([]domain.User, error)
 	GetUserById(id int) (domain.User, error)
-	CreateUser(user domain.User) error
+	AddUser(user domain.User) error
+	UpdateUser(id int, user domain.User) error
 	DeleteUser(id int) error
 }
 
@@ -34,8 +36,16 @@ func (u *UserRepository) GetUserById(id int) (domain.User, error) {
 	return user, nil
 }
 
-func (u *UserRepository) CreateUser(user domain.User) error {
-	u.db.Create(user)
+func (u *UserRepository) AddUser(user domain.User) error {
+	u.db.Create(&user)
+	return nil
+}
+
+func (u *UserRepository) UpdateUser(id int, user domain.User) error {
+	if err := u.db.Where("id=?", user.ID).First(&user).Error; err != nil {
+		ewrap.LogFatal(err)
+	}
+	u.db.Save(&user)
 	return nil
 }
 

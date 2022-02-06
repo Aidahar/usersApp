@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/Aidahar/filmsApi/internal/domain"
-	"github.com/Aidahar/filmsApi/internal/repository/psql"
+	"github.com/Aidahar/filmsApi/internal/repository/sqlit"
 )
 
 type Servicecer interface {
@@ -14,10 +14,10 @@ type Servicecer interface {
 }
 
 type UserService struct {
-	repo psql.Userer
+	repo sqlit.Userer
 }
 
-func NewUsersService(repo psql.Userer) *UserService {
+func NewUsersService(repo sqlit.Userer) *UserService {
 	return &UserService{
 		repo: repo,
 	}

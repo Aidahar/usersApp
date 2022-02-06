@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/Aidahar/filmsApi/internal/domain"
+	"github.com/Aidahar/filmsApi/internal/repository/sqlit"
 	"github.com/Aidahar/filmsApi/internal/service"
 	transport "github.com/Aidahar/filmsApi/internal/transport/echo"
 	"github.com/Aidahar/filmsApi/pkg/database"
@@ -46,7 +47,7 @@ func main() {
 
 	// Postgres repository
 	// repos := psql.NewUserRepository(db)
-	repos := sqlites.NewUserRepository(db)
+	repos := sqlit.NewUserRepository(db)
 	service := service.NewUsersService(repos)
 	handlers := transport.NewHandler(*service)
 	e := handlers.InitRoutes()
